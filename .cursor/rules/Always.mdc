@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+You are working on Orion, a production-grade multi-agent platform.
+Stack: FastAPI (async, Python 3.11+), LangGraph, Celery, PostgreSQL (SQLAlchemy 2.0),
+MongoDB (Motor), Qdrant, Next.js 14, TypeScript strict mode, Tailwind + shadcn/ui.
+
+Rules:
+- Always use async/await. No blocking I/O.
+- Follow repository pattern: no DB logic in route handlers.
+- All functions must have type hints and docstrings.
+- Pydantic v2 for all schemas. Never expose ORM models directly.
+- Tests go in /tests, mirror the source structure, use pytest.
+- Never leave TODO comments. Implement fully or don't write it.
