@@ -24,16 +24,23 @@ type WorkflowDetail = {
  * Live workflow console combining polling, SSE, and rendered markdown output.
  */
 export default function WorkflowDetailPage() {
-  const params = useParams<{ id: string }>();
-  const workflowId = params.id;
+  const params = useParams();
+  const rawId = params?.id;
+  const workflowId =
+    typeof rawId === "string" ? rawId : Array.isArray(rawId) ? (rawId[0] ?? null) : null;
+
   const { lastEvent, connected } = useWorkflowStream(workflowId);
 
   const { data, isLoading } = useQuery({
     queryKey: ["workflow", workflowId],
     queryFn: async () => {
+      if (!workflowId) {
+        throw new Error("Missing workflow id");
+      }
       const response = await apiFetch<WorkflowDetail>(`/api/v1/workflows/${workflowId}`);
       return response.data;
     },
+    enabled: Boolean(workflowId),
     refetchInterval: 4000,
   });
 

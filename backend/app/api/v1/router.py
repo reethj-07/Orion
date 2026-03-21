@@ -4,8 +4,8 @@ from fastapi import APIRouter
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
-from app.api.v1 import analytics as analytics_routes
 from app.api.v1 import admin as admin_routes
+from app.api.v1 import analytics as analytics_routes
 from app.api.v1 import auth as auth_routes
 from app.api.v1 import documents as document_routes
 from app.api.v1 import search as search_routes

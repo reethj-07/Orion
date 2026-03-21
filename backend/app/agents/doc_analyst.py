@@ -2,12 +2,13 @@
 
 from uuid import UUID
 
-import httpx
 from qdrant_client import AsyncQdrantClient
 from redis.asyncio import Redis
 
 from app.agents.events import publish_workflow_update
 from app.core.config import Settings
+from app.core.embeddings import embed_text_async
+from app.core.exceptions import ValidationAppError
 from app.core.logging import get_logger
 from app.repositories.qdrant.vector_repo import VectorRepository
 
@@ -16,32 +17,22 @@ logger = get_logger(__name__)
 
 async def _embed_query(text: str, settings: Settings) -> list[float]:
     """
-    Create an embedding vector for a query using the OpenAI embeddings API.
+    Create an embedding vector for a query (OpenAI or local Ollama).
 
     Args:
         text: Query text to embed.
-        settings: Application settings including API credentials.
+        settings: Application settings including provider and credentials.
 
     Returns:
         Embedding vector.
 
     Raises:
-        RuntimeError: When OpenAI credentials are missing or the request fails.
+        RuntimeError: When configuration is invalid or the request fails.
     """
-    if not settings.openai_api_key:
-        raise RuntimeError("OPENAI_API_KEY is required for semantic retrieval")
-    async with httpx.AsyncClient(timeout=60.0) as client:
-        response = await client.post(
-            "https://api.openai.com/v1/embeddings",
-            headers={
-                "Authorization": f"Bearer {settings.openai_api_key}",
-                "Content-Type": "application/json",
-            },
-            json={"model": settings.embedding_model, "input": text},
-        )
-        response.raise_for_status()
-        payload = response.json()
-        return payload["data"][0]["embedding"]
+    try:
+        return await embed_text_async(text, settings)
+    except ValidationAppError as exc:
+        raise RuntimeError(str(exc)) from exc
 
 
 async def run_document_analysis(

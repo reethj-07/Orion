@@ -22,10 +22,8 @@ export function useWorkflowStream(workflowId: string | null) {
     if (!workflowId) {
       return;
     }
-    const source = new EventSource(
-      `${API_BASE}/api/v1/workflows/${workflowId}/stream`,
-      { withCredentials: true },
-    );
+    // Single-arg constructor avoids DOM typings mismatch for EventSourceInit on some TS targets.
+    const source = new EventSource(`${API_BASE}/api/v1/workflows/${workflowId}/stream`);
     source.onopen = () => setConnected(true);
     source.onerror = () => setConnected(false);
     source.onmessage = (event) => {

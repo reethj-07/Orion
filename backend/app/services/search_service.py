@@ -2,10 +2,10 @@
 
 from uuid import UUID
 
-import httpx
 from qdrant_client import AsyncQdrantClient
 
 from app.core.config import Settings
+from app.core.embeddings import embed_text_async
 from app.core.exceptions import ValidationAppError
 from app.core.principal import AuthPrincipal
 from app.repositories.qdrant.vector_repo import VectorRepository
@@ -22,7 +22,7 @@ class SearchService:
 
     async def _embed(self, text: str) -> list[float]:
         """
-        Embed query text using OpenAI HTTP API.
+        Embed query text using the configured provider (OpenAI or Ollama).
 
         Args:
             text: Query string.
@@ -31,22 +31,9 @@ class SearchService:
             Embedding vector.
 
         Raises:
-            ValidationAppError: When credentials are missing.
+            ValidationAppError: When configuration is invalid or the request fails.
         """
-        if not self._settings.openai_api_key:
-            raise ValidationAppError("OPENAI_API_KEY is required for search")
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                "https://api.openai.com/v1/embeddings",
-                headers={
-                    "Authorization": f"Bearer {self._settings.openai_api_key}",
-                    "Content-Type": "application/json",
-                },
-                json={"model": self._settings.embedding_model, "input": text},
-            )
-            response.raise_for_status()
-            payload = response.json()
-            return payload["data"][0]["embedding"]
+        return await embed_text_async(text, self._settings)
 
     async def semantic_search(
         self,

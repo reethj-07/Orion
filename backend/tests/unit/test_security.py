@@ -4,8 +4,6 @@ from uuid import uuid4
 
 import jwt
 import pytest
-
-from app.core.config import get_settings
 from app.core.security import (
     create_access_token,
     create_refresh_token,

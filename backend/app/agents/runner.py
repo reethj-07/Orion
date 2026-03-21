@@ -95,7 +95,7 @@ async def run_workflow_graph(workflow_id: UUID, org_id: UUID, user_id: UUID) -> 
             },
             trace=trace,
         )
-    except Exception as exc:
+    except Exception:
         logger.exception("workflow_failed", workflow_id=str(workflow_id))
         async with factory() as session:
             wf_repo = WorkflowRepository(session)

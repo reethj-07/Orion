@@ -7,8 +7,8 @@ from fastapi import APIRouter, Request
 from app.api.responses import success_envelope
 from app.core.dependencies import AdminPrincipal, DbSession
 from app.schemas.admin import (
-    APIKeyCreateRequest,
     APIKeyCreatedResponse,
+    APIKeyCreateRequest,
     APIKeySummary,
     UserRoleUpdateRequest,
 )

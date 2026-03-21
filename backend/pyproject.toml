@@ -29,10 +29,11 @@ dependencies = [
     "langchain>=0.3.10,<1.0",
     "langchain-openai>=0.2.10,<1.0",
     "langchain-anthropic>=0.3.0,<1.0",
+    "langchain-ollama>=0.2.0,<1.0",
     "langchain-community>=0.3.10,<1.0",
+    "duckduckgo-search>=7.0,<8.0",
     "llama-index>=0.12.0,<1.0",
     "llama-index-vector-stores-qdrant>=0.3.0,<1.0",
-    "llama-index-embeddings-openai>=0.2.0,<1.0",
     "llama-index-readers-web>=0.2.0,<1.0",
     "beautifulsoup4>=4.12.0,<5.0",
     "httpx>=0.28.0,<1.0",
@@ -67,14 +68,19 @@ include = ["app*"]
 
 [tool.ruff]
 target-version = "py311"
-line-length = 100
+line-length = 120
 src = ["app", "tests"]
+extend-exclude = ["alembic"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"app/models/**" = ["F821"]
 
 [tool.black]
-line-length = 100
+line-length = 120
 target-version = ["py311"]
 
 [tool.mypy]
@@ -88,6 +94,7 @@ plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
 module = [
+    "bson.*",
     "celery.*",
     "motor.*",
     "llama_index.*",

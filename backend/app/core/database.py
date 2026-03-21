@@ -2,7 +2,8 @@
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from qdrant_client import AsyncQdrantClient
-from redis.asyncio import Redis, from_url as redis_from_url
+from redis.asyncio import Redis
+from redis.asyncio import from_url as redis_from_url
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,

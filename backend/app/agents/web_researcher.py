@@ -1,10 +1,11 @@
 """Web research specialist agent."""
 
+from redis.asyncio import Redis
+
 from app.agents.events import publish_workflow_update
-from app.agents.tools import build_tavily_search_tool, scrape_url_text
+from app.agents.tools import build_web_search_tool, scrape_url_text
 from app.core.config import Settings
 from app.core.logging import get_logger
-from redis.asyncio import Redis
 
 logger = get_logger(__name__)
 
@@ -17,7 +18,7 @@ async def run_web_research(
     redis: Redis,
 ) -> str:
     """
-    Collect external context using Tavily (when configured) and lightweight scraping.
+    Collect external context using DuckDuckGo, Tavily (optional), or scraping only.
 
     Args:
         task: User task text used to derive queries.
@@ -33,17 +34,17 @@ async def run_web_research(
         workflow_id,
         {"agent": "web_research", "status": "running", "detail": "Gathering web context"},
     )
-    tool = build_tavily_search_tool(settings)
+    tool = build_web_search_tool(settings)
     snippets: list[str] = []
     if tool is not None:
         try:
             result = await tool.ainvoke({"query": task})
             snippets.append(str(result))
         except Exception as exc:  # pragma: no cover - network failures
-            logger.warning("tavily_search_failed", error=str(exc))
+            logger.warning("web_search_failed", error=str(exc))
             snippets.append("Live search failed; continuing with direct fetch only.")
     else:
-        snippets.append("Tavily API key not configured; skipping live search.")
+        snippets.append("Web search disabled (WEB_SEARCH_PROVIDER=none); skipping live search.")
 
     await publish_workflow_update(
         redis,

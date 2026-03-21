@@ -4,7 +4,6 @@ import os
 from collections.abc import Iterator
 
 import pytest
-
 from app.core.config import Settings, clear_settings_cache, get_settings
 
 

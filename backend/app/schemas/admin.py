@@ -6,7 +6,6 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 from app.models.user import UserRole
-from app.schemas.auth import UserPublic
 
 
 class APIKeyCreateRequest(BaseModel):

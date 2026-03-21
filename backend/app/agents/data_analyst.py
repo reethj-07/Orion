@@ -3,11 +3,11 @@
 import json
 from typing import Any
 
+from redis.asyncio import Redis
 from RestrictedPython import compile_restricted
 
 from app.agents.events import publish_workflow_update
 from app.core.logging import get_logger
-from redis.asyncio import Redis
 
 logger = get_logger(__name__)
 

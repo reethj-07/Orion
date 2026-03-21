@@ -1,7 +1,9 @@
 """Business logic for workflow lifecycle and orchestration dispatch."""
 
+from typing import Any
 from uuid import UUID
 
+from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,6 +20,31 @@ from app.schemas.workflow import (
     WorkflowResponse,
 )
 from app.tasks.workflow_tasks import execute_workflow_task
+
+
+def _serialize_mongo_document(document: dict[str, Any] | None) -> dict[str, Any] | None:
+    """
+    Convert MongoDB BSON types into JSON-serializable primitives.
+
+    Args:
+        document: Raw Mongo document.
+
+    Returns:
+        Serializable dictionary or None when input is None.
+    """
+    if document is None:
+        return None
+
+    def _transform(value: Any) -> Any:
+        if isinstance(value, ObjectId):
+            return str(value)
+        if isinstance(value, dict):
+            return {key: _transform(val) for key, val in value.items()}
+        if isinstance(value, list):
+            return [_transform(item) for item in value]
+        return value
+
+    return {key: _transform(val) for key, val in document.items()}
 
 
 class WorkflowService:

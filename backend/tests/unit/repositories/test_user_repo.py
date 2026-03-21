@@ -1,12 +1,10 @@
 """Unit tests for UserRepository query construction."""
 
 from unittest.mock import AsyncMock, MagicMock
-from uuid import uuid4
 
 import pytest
-from sqlalchemy.engine import Result
-
 from app.repositories.pg.user_repo import UserRepository
+from sqlalchemy.engine import Result
 
 
 @pytest.mark.asyncio

@@ -89,7 +89,7 @@ class VectorRepository:
         collection = documents_collection_name(org_id)
         await self.ensure_collection(collection, vector_size=vector_size)
         points: list[rest.PointStruct] = []
-        for index, (vector, text) in enumerate(zip(embeddings, texts, strict=True)):
+        for vector, text in zip(embeddings, texts, strict=True):
             chunk_id = str(uuid4())
             preview = text[:500]
             payload: dict[str, Any] = {

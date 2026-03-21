@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings
 from app.core.exceptions import ConflictError, UnauthorizedError, ValidationAppError
+from app.core.principal import AuthPrincipal
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -148,7 +149,7 @@ class AuthService:
             raise ValidationAppError("Provided token is not a refresh token")
         jti = payload.get("jti")
         exp = payload.get("exp")
-        if not isinstance(jti, str) or not isinstance(exp, (int, float)):
+        if not isinstance(jti, str) or not isinstance(exp, int | float):
             return
         ttl = int(exp - time.time())
         if ttl > 0:

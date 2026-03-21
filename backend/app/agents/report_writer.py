@@ -1,11 +1,11 @@
 """Report writer agent synthesizing markdown output."""
 
 from langchain_core.messages import HumanMessage
+from redis.asyncio import Redis
 
 from app.agents.events import publish_workflow_update
 from app.agents.llm import get_chat_model
 from app.core.config import Settings
-from redis.asyncio import Redis
 
 
 async def run_report_writer(

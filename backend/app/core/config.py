@@ -6,6 +6,10 @@ from typing import Literal
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+WebSearchProvider = Literal["duckduckgo", "tavily", "none"]
+EmbeddingProvider = Literal["openai", "ollama"]
+LLMProvider = Literal["openai", "anthropic", "ollama"]
+
 
 class Settings(BaseSettings):
     """Strongly typed application configuration."""
@@ -33,18 +37,22 @@ class Settings(BaseSettings):
     celery_result_backend: str = Field(default="redis://localhost:6379/2", alias="CELERY_RESULT_BACKEND")
 
     openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
-    openai_model: str = Field(default="gpt-4o", alias="OPENAI_MODEL")
+    openai_model: str = Field(default="gpt-4o-mini", alias="OPENAI_MODEL")
     anthropic_api_key: str | None = Field(default=None, alias="ANTHROPIC_API_KEY")
     anthropic_model: str = Field(
-        default="claude-3-5-sonnet-20241022",
+        default="claude-3-5-haiku-20241022",
         alias="ANTHROPIC_MODEL",
     )
-    llm_provider: Literal["openai", "anthropic"] = Field(default="openai", alias="LLM_PROVIDER")
+    llm_provider: LLMProvider = Field(default="ollama", alias="LLM_PROVIDER")
     embedding_model: str = Field(default="text-embedding-3-small", alias="EMBEDDING_MODEL")
+    embedding_provider: EmbeddingProvider = Field(default="ollama", alias="EMBEDDING_PROVIDER")
 
+    ollama_base_url: str = Field(default="http://localhost:11434", alias="OLLAMA_BASE_URL")
+    ollama_model: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
+    ollama_embed_model: str = Field(default="nomic-embed-text", alias="OLLAMA_EMBED_MODEL")
+
+    web_search_provider: WebSearchProvider = Field(default="duckduckgo", alias="WEB_SEARCH_PROVIDER")
     tavily_api_key: str | None = Field(default=None, alias="TAVILY_API_KEY")
-    serpapi_api_key: str | None = Field(default=None, alias="SERPAPI_API_KEY")
-    cohere_api_key: str | None = Field(default=None, alias="COHERE_API_KEY")
 
     cors_origins: str = Field(
         default="http://localhost:3000",
