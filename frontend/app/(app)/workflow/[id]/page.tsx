@@ -20,6 +20,22 @@ type WorkflowDetail = {
   trace: { agent_type?: string; status?: string }[];
 };
 
+type AgentUiStatus = "pending" | "running" | "done" | "failed";
+
+function mapAgentStatus(raw: string): AgentUiStatus {
+  const s = raw.toLowerCase();
+  if (s.includes("fail") || s === "error") {
+    return "failed";
+  }
+  if (s.includes("complete") || s === "done" || s === "success" || s === "completed") {
+    return "done";
+  }
+  if (s.includes("run") || s === "active" || s === "running") {
+    return "running";
+  }
+  return "pending";
+}
+
 /**
  * Live workflow console combining polling, SSE, and rendered markdown output.
  */

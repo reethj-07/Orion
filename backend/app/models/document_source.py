@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 
-class DocumentSourceType(str, enum.Enum):
+class DocumentSourceType(enum.StrEnum):
     """Supported ingestion source categories."""
 
     PDF = "pdf"
