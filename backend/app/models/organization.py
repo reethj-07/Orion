@@ -41,22 +41,22 @@ class Organization(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         default=dict,
     )
 
-    users: Mapped[list["User"]] = relationship(
+    users: Mapped[list[User]] = relationship(
         "User",
         back_populates="organization",
         cascade="all, delete-orphan",
     )
-    workflows: Mapped[list["Workflow"]] = relationship(
+    workflows: Mapped[list[Workflow]] = relationship(
         "Workflow",
         back_populates="organization",
         cascade="all, delete-orphan",
     )
-    api_keys: Mapped[list["APIKey"]] = relationship(
+    api_keys: Mapped[list[APIKey]] = relationship(
         "APIKey",
         back_populates="organization",
         cascade="all, delete-orphan",
     )
-    document_sources: Mapped[list["DocumentSource"]] = relationship(
+    document_sources: Mapped[list[DocumentSource]] = relationship(
         "DocumentSource",
         back_populates="organization",
         cascade="all, delete-orphan",

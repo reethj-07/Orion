@@ -49,4 +49,4 @@ class AuditLog(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         default=dict,
     )
 
-    user: Mapped["User | None"] = relationship("User", back_populates="audit_logs")
+    user: Mapped[User | None] = relationship("User", back_populates="audit_logs")

@@ -6,10 +6,9 @@ from uuid import UUID
 import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.infra_types import RedisJSON
-
 from app.core.config import Settings
 from app.core.exceptions import ConflictError, UnauthorizedError, ValidationAppError
+from app.core.infra_types import RedisJSON
 from app.core.principal import AuthPrincipal
 from app.core.security import (
     create_access_token,

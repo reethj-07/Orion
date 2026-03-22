@@ -54,13 +54,13 @@ class User(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     )
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
 
-    organization: Mapped["Organization"] = relationship("Organization", back_populates="users")
-    workflows: Mapped[list["Workflow"]] = relationship(
+    organization: Mapped[Organization] = relationship("Organization", back_populates="users")
+    workflows: Mapped[list[Workflow]] = relationship(
         "Workflow",
         back_populates="user",
         cascade="all, delete-orphan",
     )
-    audit_logs: Mapped[list["AuditLog"]] = relationship(
+    audit_logs: Mapped[list[AuditLog]] = relationship(
         "AuditLog",
         back_populates="user",
         cascade="all, delete-orphan",

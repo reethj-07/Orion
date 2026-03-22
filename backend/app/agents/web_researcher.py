@@ -1,10 +1,9 @@
 """Web research specialist agent."""
 
-from app.core.infra_types import RedisJSON
-
 from app.agents.events import publish_workflow_update
 from app.agents.tools import build_web_search_tool, scrape_url_text
 from app.core.config import Settings
+from app.core.infra_types import RedisJSON
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)

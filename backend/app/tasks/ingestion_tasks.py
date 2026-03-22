@@ -8,9 +8,9 @@ from pathlib import Path
 from uuid import UUID
 
 from app.core.config import get_settings
-from app.core.logging import get_logger
 from app.core.crypto import decrypt_config
 from app.core.database import create_pg_engine, create_qdrant_client, create_session_factory
+from app.core.logging import get_logger
 from app.models.document_source import DocumentSourceType
 from app.pipelines.ingestion import (
     chunk_and_embed,

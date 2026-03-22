@@ -15,7 +15,7 @@ def _coerce_float(value: object, default: float = 0.0) -> float:
     """Best-effort float coercion for loosely typed Qdrant payload values."""
     if isinstance(value, bool):
         return default
-    if isinstance(value, (int, float)):
+    if isinstance(value, int | float):
         return float(value)
     if isinstance(value, str):
         try:

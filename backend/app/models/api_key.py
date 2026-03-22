@@ -43,4 +43,4 @@ class APIKey(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     scopes: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
     expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    organization: Mapped["Organization"] = relationship("Organization", back_populates="api_keys")
+    organization: Mapped[Organization] = relationship("Organization", back_populates="api_keys")

@@ -3,12 +3,12 @@
 from uuid import UUID
 
 from qdrant_client import AsyncQdrantClient
-from app.core.infra_types import RedisJSON
 
 from app.agents.events import publish_workflow_update
 from app.core.config import Settings
 from app.core.embeddings import embed_text_async
 from app.core.exceptions import ValidationAppError
+from app.core.infra_types import RedisJSON
 from app.core.logging import get_logger
 from app.repositories.qdrant.vector_repo import VectorRepository
 

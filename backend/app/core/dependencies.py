@@ -7,10 +7,9 @@ from fastapi import Cookie, Depends, Header, Request
 from qdrant_client import AsyncQdrantClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from app.core.infra_types import MotorDatabase, RedisJSON
-
 from app.core.config import Settings, get_settings
 from app.core.exceptions import ForbiddenError, UnauthorizedError
+from app.core.infra_types import MotorDatabase, RedisJSON
 from app.core.principal import AuthPrincipal
 from app.models.user import UserRole
 from app.services.auth_service import AuthService

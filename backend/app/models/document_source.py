@@ -57,7 +57,7 @@ class DocumentSource(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     ingestion_status: Mapped[str] = mapped_column(String(32), nullable=False, default="pending")
     last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    organization: Mapped["Organization"] = relationship(
+    organization: Mapped[Organization] = relationship(
         "Organization",
         back_populates="document_sources",
     )

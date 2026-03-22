@@ -3,10 +3,10 @@
 import json
 from typing import Any
 
-from app.core.infra_types import RedisJSON
 from RestrictedPython import compile_restricted
 
 from app.agents.events import publish_workflow_update
+from app.core.infra_types import RedisJSON
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)

@@ -69,5 +69,5 @@ class Workflow(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    user: Mapped["User"] = relationship("User", back_populates="workflows")
-    organization: Mapped["Organization"] = relationship("Organization", back_populates="workflows")
+    user: Mapped[User] = relationship("User", back_populates="workflows")
+    organization: Mapped[Organization] = relationship("Organization", back_populates="workflows")

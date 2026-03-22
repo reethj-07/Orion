@@ -2,17 +2,17 @@
 
 from typing import cast
 
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
+from motor.motor_asyncio import AsyncIOMotorClient
 from qdrant_client import AsyncQdrantClient
 from redis.asyncio import from_url as redis_from_url
-
-from app.core.infra_types import MotorClient, MotorDatabase, RedisJSON
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
+
+from app.core.infra_types import MotorClient, MotorDatabase, RedisJSON
 
 
 def create_pg_engine(database_url: str) -> AsyncEngine:
