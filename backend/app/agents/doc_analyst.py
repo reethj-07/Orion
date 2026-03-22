@@ -3,7 +3,7 @@
 from uuid import UUID
 
 from qdrant_client import AsyncQdrantClient
-from redis.asyncio import Redis
+from app.core.infra_types import RedisJSON
 
 from app.agents.events import publish_workflow_update
 from app.core.config import Settings
@@ -41,7 +41,7 @@ async def run_document_analysis(
     workflow_id: str,
     org_id: UUID,
     settings: Settings,
-    redis: Redis,
+    redis: RedisJSON,
     qdrant: AsyncQdrantClient,
 ) -> str:
     """

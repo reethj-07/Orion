@@ -4,8 +4,9 @@ import time
 from uuid import UUID
 
 import jwt
-from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.infra_types import RedisJSON
 
 from app.core.config import Settings
 from app.core.exceptions import ConflictError, UnauthorizedError, ValidationAppError
@@ -27,7 +28,7 @@ from app.schemas.auth import AuthResponse, LoginRequest, RegisterRequest, TokenP
 class AuthService:
     """Coordinates credential verification and token lifecycle."""
 
-    def __init__(self, session: AsyncSession, redis: Redis, settings: Settings) -> None:
+    def __init__(self, session: AsyncSession, redis: RedisJSON, settings: Settings) -> None:
         self._session = session
         self._redis = redis
         self._settings = settings

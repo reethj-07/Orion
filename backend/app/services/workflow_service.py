@@ -4,10 +4,10 @@ from typing import Any
 from uuid import UUID
 
 from bson import ObjectId
-from motor.motor_asyncio import AsyncIOMotorDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings
+from app.core.infra_types import MotorDatabase
 from app.core.exceptions import ForbiddenError, NotFoundError
 from app.core.principal import AuthPrincipal
 from app.models.user import UserRole
@@ -50,7 +50,7 @@ def _serialize_mongo_document(document: dict[str, Any] | None) -> dict[str, Any]
 class WorkflowService:
     """Coordinates workflow persistence, dispatch, and result hydration."""
 
-    def __init__(self, session: AsyncSession, mongo: AsyncIOMotorDatabase, settings: Settings) -> None:
+    def __init__(self, session: AsyncSession, mongo: MotorDatabase, settings: Settings) -> None:
         self._session = session
         self._mongo = mongo
         self._settings = settings

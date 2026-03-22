@@ -6,12 +6,12 @@ from typing import Any
 import httpx
 from bs4 import BeautifulSoup
 from duckduckgo_search import DDGS
-from langchain_core.tools import tool
+from langchain_core.tools import BaseTool, tool
 
 from app.core.config import Settings
 
 
-def build_duckduckgo_search_tool():
+def build_duckduckgo_search_tool() -> BaseTool:
     """
     Build a DuckDuckGo-backed search tool (no API key; suitable for zero-cost setups).
 
@@ -46,7 +46,7 @@ def build_duckduckgo_search_tool():
     return web_search
 
 
-def build_tavily_search_tool(settings: Settings):
+def build_tavily_search_tool(settings: Settings) -> BaseTool | None:
     """
     Build a Tavily-backed search tool when an API key is configured.
 
@@ -88,7 +88,7 @@ def build_tavily_search_tool(settings: Settings):
     return tavily_search
 
 
-def build_web_search_tool(settings: Settings):
+def build_web_search_tool(settings: Settings) -> BaseTool | None:
     """
     Build a web search tool from ``WEB_SEARCH_PROVIDER``.
 

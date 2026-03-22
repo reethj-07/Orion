@@ -158,7 +158,7 @@ class VectorRepository:
         collection = documents_collection_name(org_id)
         if not await self._client.collection_exists(collection):
             return []
-        results = await self._client.search(
+        results = await self._client.search(  # type: ignore[attr-defined]
             collection_name=collection,
             query_vector=query_vector,
             limit=limit,

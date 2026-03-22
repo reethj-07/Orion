@@ -1,6 +1,6 @@
 """Web research specialist agent."""
 
-from redis.asyncio import Redis
+from app.core.infra_types import RedisJSON
 
 from app.agents.events import publish_workflow_update
 from app.agents.tools import build_web_search_tool, scrape_url_text
@@ -15,7 +15,7 @@ async def run_web_research(
     task: str,
     workflow_id: str,
     settings: Settings,
-    redis: Redis,
+    redis: RedisJSON,
 ) -> str:
     """
     Collect external context using DuckDuckGo, Tavily (optional), or scraping only.

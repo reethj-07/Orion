@@ -105,6 +105,6 @@ async def run_workflow_graph(workflow_id: UUID, org_id: UUID, user_id: UUID) -> 
         raise
     finally:
         await qdrant.close()
-        await redis.aclose()
+        await redis.close()
         motor_client.close()
         await engine.dispose()

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import httpx
 
 from app.core.config import Settings
@@ -38,7 +40,7 @@ async def embed_text_async(text: str, settings: Settings) -> list[float]:
             vector = payload.get("embedding")
             if not vector:
                 raise ValidationAppError("Ollama returned an empty embedding")
-            return list(vector)
+            return cast(list[float], list(vector))
 
     if not settings.openai_api_key:
         raise ValidationAppError("OPENAI_API_KEY is required when EMBEDDING_PROVIDER=openai")
@@ -53,7 +55,7 @@ async def embed_text_async(text: str, settings: Settings) -> list[float]:
         )
         response.raise_for_status()
         payload = response.json()
-        return payload["data"][0]["embedding"]
+        return cast(list[float], payload["data"][0]["embedding"])
 
 
 def embed_texts_batch_sync(texts: list[str], settings: Settings) -> list[list[float]]:
@@ -87,7 +89,7 @@ def embed_texts_batch_sync(texts: list[str], settings: Settings) -> list[list[fl
                 vector = payload.get("embedding")
                 if not vector:
                     raise ValidationAppError("Ollama returned an empty embedding")
-                out.append(list(vector))
+                out.append(cast(list[float], list(vector)))
         return out
 
     if not settings.openai_api_key:
@@ -105,4 +107,4 @@ def embed_texts_batch_sync(texts: list[str], settings: Settings) -> list[list[fl
         response.raise_for_status()
         payload = response.json()
         data = sorted(payload["data"], key=lambda row: row["index"])
-        return [row["embedding"] for row in data]
+        return [cast(list[float], row["embedding"]) for row in data]

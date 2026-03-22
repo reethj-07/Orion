@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
+from typing import cast
 
 from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
@@ -35,7 +36,7 @@ def load_documents_pdf(path: Path) -> list[Document]:
         List of loaded documents.
     """
     reader = PyMuPDFReader()
-    return reader.load(file_path=str(path))
+    return cast(list[Document], reader.load(file_path=str(path)))
 
 
 def load_documents_url(url: str) -> list[Document]:
@@ -49,7 +50,7 @@ def load_documents_url(url: str) -> list[Document]:
         List of loaded documents.
     """
     reader = SimpleWebPageReader()
-    return reader.load_data([url])
+    return cast(list[Document], reader.load_data([url]))
 
 
 def load_documents_text(text: str, name: str) -> list[Document]:

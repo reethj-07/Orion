@@ -1,10 +1,10 @@
 """LangGraph orchestration wiring specialist agents into a linear state machine."""
 
+from typing import Any
 from uuid import UUID
 
 from langgraph.graph import END, START, StateGraph
 from qdrant_client import AsyncQdrantClient
-from redis.asyncio import Redis
 
 from app.agents.data_analyst import run_data_analysis
 from app.agents.doc_analyst import run_document_analysis
@@ -12,12 +12,13 @@ from app.agents.report_writer import run_report_writer
 from app.agents.state import WorkflowState
 from app.agents.web_researcher import run_web_research
 from app.core.config import Settings
+from app.core.infra_types import RedisJSON
 
 
 class GraphRuntime:
     """Callable node bundle with shared infrastructure handles."""
 
-    def __init__(self, settings: Settings, redis: Redis, qdrant: AsyncQdrantClient) -> None:
+    def __init__(self, settings: Settings, redis: RedisJSON, qdrant: AsyncQdrantClient) -> None:
         self._settings = settings
         self._redis = redis
         self._qdrant = qdrant
@@ -106,9 +107,9 @@ class GraphRuntime:
 
 def build_workflow_graph(
     settings: Settings,
-    redis: Redis,
+    redis: RedisJSON,
     qdrant: AsyncQdrantClient,
-):
+) -> Any:
     """
     Compile the multi-agent LangGraph workflow.
 

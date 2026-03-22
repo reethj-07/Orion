@@ -3,10 +3,10 @@
 import json
 from typing import Any
 
-from redis.asyncio import Redis
+from app.core.infra_types import RedisJSON
 
 
-async def publish_workflow_update(redis: Redis, workflow_id: str, payload: dict[str, Any]) -> None:
+async def publish_workflow_update(redis: RedisJSON, workflow_id: str, payload: dict[str, Any]) -> None:
     """
     Publish a JSON-serialized workflow event to the workflow-specific channel.
 

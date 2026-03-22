@@ -1,7 +1,15 @@
 """Application user model."""
 
+from __future__ import annotations
+
 import enum
+from typing import TYPE_CHECKING
 from uuid import UUID
+
+if TYPE_CHECKING:
+    from app.models.audit_log import AuditLog
+    from app.models.organization import Organization
+    from app.models.workflow import Workflow
 
 from sqlalchemy import Boolean, Enum, ForeignKey, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID as PGUUID

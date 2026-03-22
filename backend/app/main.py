@@ -58,7 +58,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     yield
 
     await qdrant.close()
-    await redis_client.aclose()
+    await redis_client.close()
     motor.close()
     await engine.dispose()
     logger.info("application_shutdown_complete")

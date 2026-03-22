@@ -1,9 +1,12 @@
 """Async database engines and client factories for PostgreSQL, MongoDB, Redis, and Qdrant."""
 
+from typing import cast
+
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from qdrant_client import AsyncQdrantClient
-from redis.asyncio import Redis
 from redis.asyncio import from_url as redis_from_url
+
+from app.core.infra_types import MotorClient, MotorDatabase, RedisJSON
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -47,7 +50,7 @@ def create_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSessi
     )
 
 
-def create_motor_client(mongodb_uri: str) -> AsyncIOMotorClient:
+def create_motor_client(mongodb_uri: str) -> MotorClient:
     """
     Create a Motor client for MongoDB.
 
@@ -60,7 +63,7 @@ def create_motor_client(mongodb_uri: str) -> AsyncIOMotorClient:
     return AsyncIOMotorClient(mongodb_uri)
 
 
-def get_motor_database(client: AsyncIOMotorClient, db_name: str) -> AsyncIOMotorDatabase:
+def get_motor_database(client: MotorClient, db_name: str) -> MotorDatabase:
     """
     Select a database from a Motor client.
 
@@ -74,7 +77,7 @@ def get_motor_database(client: AsyncIOMotorClient, db_name: str) -> AsyncIOMotor
     return client[db_name]
 
 
-def create_redis_client(redis_url: str) -> Redis:
+def create_redis_client(redis_url: str) -> RedisJSON:
     """
     Create an asyncio-compatible Redis client.
 
@@ -84,7 +87,7 @@ def create_redis_client(redis_url: str) -> Redis:
     Returns:
         Redis client instance.
     """
-    return redis_from_url(redis_url, decode_responses=True)
+    return cast(RedisJSON, redis_from_url(redis_url, decode_responses=True))
 
 
 def create_qdrant_client(qdrant_url: str) -> AsyncQdrantClient:

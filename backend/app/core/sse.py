@@ -3,10 +3,10 @@
 from collections.abc import AsyncIterator
 from typing import Any
 
-from redis.asyncio import Redis
+from app.core.infra_types import RedisJSON
 
 
-async def workflow_event_stream(redis: Redis, workflow_id: str) -> AsyncIterator[dict[str, Any]]:
+async def workflow_event_stream(redis: RedisJSON, workflow_id: str) -> AsyncIterator[dict[str, Any]]:
     """
     Yield SSE-compatible dictionaries sourced from Redis pub/sub messages.
 

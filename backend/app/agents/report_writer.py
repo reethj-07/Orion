@@ -1,7 +1,7 @@
 """Report writer agent synthesizing markdown output."""
 
 from langchain_core.messages import HumanMessage
-from redis.asyncio import Redis
+from app.core.infra_types import RedisJSON
 
 from app.agents.events import publish_workflow_update
 from app.agents.llm import get_chat_model
@@ -14,7 +14,7 @@ async def run_report_writer(
     agent_outputs: dict[str, str],
     workflow_id: str,
     settings: Settings,
-    redis: Redis,
+    redis: RedisJSON,
 ) -> str:
     """
     Combine intermediate agent outputs into a structured markdown report.

@@ -1,13 +1,13 @@
 """FastAPI dependency callables for configuration and infrastructure handles."""
 
 from collections.abc import AsyncIterator
-from typing import Annotated
+from typing import Annotated, cast
 
 from fastapi import Cookie, Depends, Header, Request
-from motor.motor_asyncio import AsyncIOMotorDatabase
 from qdrant_client import AsyncQdrantClient
-from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
+from app.core.infra_types import MotorDatabase, RedisJSON
 
 from app.core.config import Settings, get_settings
 from app.core.exceptions import ForbiddenError, UnauthorizedError
@@ -37,7 +37,7 @@ async def get_db_session(request: Request) -> AsyncIterator[AsyncSession]:
         yield session
 
 
-def get_mongo_db(request: Request) -> AsyncIOMotorDatabase:
+def get_mongo_db(request: Request) -> MotorDatabase:
     """
     Return the Motor database handle from application state.
 
@@ -47,10 +47,10 @@ def get_mongo_db(request: Request) -> AsyncIOMotorDatabase:
     Returns:
         AsyncIOMotorDatabase for the configured database name.
     """
-    return request.app.state.mongo_db
+    return cast(MotorDatabase, request.app.state.mongo_db)
 
 
-def get_redis(request: Request) -> Redis:
+def get_redis(request: Request) -> RedisJSON:
     """
     Return the shared asyncio Redis client.
 
@@ -73,13 +73,13 @@ def get_qdrant(request: Request) -> AsyncQdrantClient:
     Returns:
         AsyncQdrantClient instance.
     """
-    return request.app.state.qdrant
+    return cast(AsyncQdrantClient, request.app.state.qdrant)
 
 
 SettingsDep = Annotated[Settings, Depends(get_settings_dep)]
 DbSession = Annotated[AsyncSession, Depends(get_db_session)]
-MongoDb = Annotated[AsyncIOMotorDatabase, Depends(get_mongo_db)]
-RedisDep = Annotated[Redis, Depends(get_redis)]
+MongoDb = Annotated[MotorDatabase, Depends(get_mongo_db)]
+RedisDep = Annotated[RedisJSON, Depends(get_redis)]
 QdrantDep = Annotated[AsyncQdrantClient, Depends(get_qdrant)]
 
 

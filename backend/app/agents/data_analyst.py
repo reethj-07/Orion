@@ -3,7 +3,7 @@
 import json
 from typing import Any
 
-from redis.asyncio import Redis
+from app.core.infra_types import RedisJSON
 from RestrictedPython import compile_restricted
 
 from app.agents.events import publish_workflow_update
@@ -54,7 +54,7 @@ async def run_data_analysis(
     *,
     task: str,
     workflow_id: str,
-    redis: Redis,
+    redis: RedisJSON,
 ) -> str:
     """
     Produce a lightweight analytic artifact suitable for dashboard rendering.

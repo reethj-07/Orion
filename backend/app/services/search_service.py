@@ -11,6 +11,20 @@ from app.repositories.qdrant.vector_repo import VectorRepository
 from app.schemas.search import HybridSearchRequest, SearchResult, SemanticSearchRequest
 
 
+def _coerce_float(value: object, default: float = 0.0) -> float:
+    """Best-effort float coercion for loosely typed Qdrant payload values."""
+    if isinstance(value, bool):
+        return default
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        try:
+            return float(value)
+        except ValueError:
+            return default
+    return default
+
+
 class SearchService:
     """Executes embedding-backed retrieval with optional lexical rescoring."""
 
@@ -73,7 +87,7 @@ class SearchService:
         tokens = {token.lower() for token in payload.query.split() if len(token) > 2}
 
         def score(hit: dict[str, object]) -> float:
-            base = float(hit.get("score", 0.0))
+            base = _coerce_float(hit.get("score", 0.0))
             preview = str(hit.get("text_preview", "")).lower()
             matches = sum(1 for token in tokens if token in preview)
             boost = payload.keyword_boost * min(matches, 5)
@@ -91,6 +105,6 @@ class SearchService:
             chunk_id=str(hit.get("chunk_id")) if hit.get("chunk_id") else None,
             source_name=str(hit.get("source_name")) if hit.get("source_name") else None,
             text_preview=str(hit.get("text_preview")) if hit.get("text_preview") else None,
-            score=float(hit.get("score", 0.0)),
+            score=_coerce_float(hit.get("score", 0.0)),
             payload={k: v for k, v in hit.items() if k not in {"score"}},
         )

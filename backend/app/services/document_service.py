@@ -163,5 +163,5 @@ class DocumentService:
             raise NotFoundError("Document not found")
         vectors = VectorRepository(self._qdrant, self._settings)
         await vectors.delete_document_vectors(principal.org_id, document_id)
-        self._repo.delete(row)
+        await self._repo.delete(row)
         await self._session.commit()

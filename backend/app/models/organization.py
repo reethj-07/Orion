@@ -1,8 +1,16 @@
 """Organization model representing a tenant."""
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import String
+
+if TYPE_CHECKING:
+    from app.models.api_key import APIKey
+    from app.models.document_source import DocumentSource
+    from app.models.user import User
+    from app.models.workflow import Workflow
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

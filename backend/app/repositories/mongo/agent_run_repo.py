@@ -4,13 +4,13 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from app.core.infra_types import MotorDatabase
 
 
 class AgentRunRepository:
     """Stores flexible agent traces and final workflow artifacts."""
 
-    def __init__(self, database: AsyncIOMotorDatabase) -> None:
+    def __init__(self, database: MotorDatabase) -> None:
         self._runs = database["agent_runs"]
         self._results = database["workflow_results"]
 

@@ -1,8 +1,8 @@
 """Analytics aggregation service."""
 
-from motor.motor_asyncio import AsyncIOMotorDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.infra_types import MotorDatabase
 from app.core.principal import AuthPrincipal
 from app.repositories.pg.audit_log_repo import AuditLogRepository
 from app.repositories.pg.workflow_repo import WorkflowRepository
@@ -12,7 +12,7 @@ from app.schemas.analytics import AuditLogEntry, UsageStats
 class AnalyticsService:
     """Combines PostgreSQL and MongoDB metrics for operator dashboards."""
 
-    def __init__(self, session: AsyncSession, mongo: AsyncIOMotorDatabase) -> None:
+    def __init__(self, session: AsyncSession, mongo: MotorDatabase) -> None:
         self._session = session
         self._mongo = mongo
         self._workflows = WorkflowRepository(session)

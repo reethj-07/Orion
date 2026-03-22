@@ -1,10 +1,17 @@
 """Workflow execution record stored in PostgreSQL."""
 
+from __future__ import annotations
+
 import enum
 from datetime import datetime
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from sqlalchemy import DateTime, Enum, ForeignKey, String, Text
+
+if TYPE_CHECKING:
+    from app.models.organization import Organization
+    from app.models.user import User
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

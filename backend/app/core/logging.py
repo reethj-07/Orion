@@ -2,7 +2,7 @@
 
 import logging
 import sys
-from typing import Any
+from typing import Any, cast
 
 import structlog
 
@@ -25,7 +25,7 @@ def configure_logging(json_logs: bool = False) -> None:
         timestamper,
         structlog.processors.StackInfoRenderer(),
         structlog.processors.format_exc_info,
-        _add_otel_stub_fields,
+        cast(structlog.types.Processor, _add_otel_stub_fields),
     ]
 
     structlog.configure(
@@ -72,4 +72,4 @@ def _add_otel_stub_fields(
 
 def get_logger(name: str) -> structlog.stdlib.BoundLogger:
     """Return a structlog-bound logger for the given module name."""
-    return structlog.get_logger(name)
+    return cast(structlog.stdlib.BoundLogger, structlog.get_logger(name))

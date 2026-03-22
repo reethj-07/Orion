@@ -3,16 +3,18 @@
 from __future__ import annotations
 
 import asyncio
-import logging
 from uuid import UUID
 
+from celery import Task
+
+from app.core.logging import get_logger
 from app.tasks.celery_app import celery_app
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 @celery_app.task(name="orion.execute_workflow", bind=True, max_retries=3)
-def execute_workflow_task(self, workflow_id: str, org_id: str, user_id: str) -> str:
+def execute_workflow_task(self: Task, workflow_id: str, org_id: str, user_id: str) -> str:
     """
     Execute a LangGraph workflow asynchronously.
 

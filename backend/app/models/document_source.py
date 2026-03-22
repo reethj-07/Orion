@@ -1,9 +1,15 @@
 """Registered document or data source for ingestion."""
 
+from __future__ import annotations
+
 import enum
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from sqlalchemy import Enum, ForeignKey, String, Text
+
+if TYPE_CHECKING:
+    from app.models.organization import Organization
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
