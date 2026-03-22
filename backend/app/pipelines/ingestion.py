@@ -50,7 +50,7 @@ def load_documents_url(url: str) -> list[Document]:
         List of loaded documents.
     """
     reader = SimpleWebPageReader()
-    return cast(list[Document], reader.load_data([url]))
+    return reader.load_data([url])
 
 
 def load_documents_text(text: str, name: str) -> list[Document]:

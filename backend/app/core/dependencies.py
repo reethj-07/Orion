@@ -59,7 +59,7 @@ def get_redis(request: Request) -> RedisJSON:
     Returns:
         Redis client instance.
     """
-    return request.app.state.redis
+    return cast(RedisJSON, request.app.state.redis)
 
 
 def get_qdrant(request: Request) -> AsyncQdrantClient:

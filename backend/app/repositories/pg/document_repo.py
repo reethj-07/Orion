@@ -103,7 +103,9 @@ class DocumentRepository:
         Args:
             row: ORM instance to delete.
         """
-        self._session.delete(row)
+        maybe_awaitable = self._session.delete(row)
+        if inspect.isawaitable(maybe_awaitable):
+            await maybe_awaitable
 
     async def update_ingestion(
         self,
