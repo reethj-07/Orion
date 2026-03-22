@@ -80,8 +80,7 @@ async def run_data_analysis(
         locals_map = _execute_restricted(code)
         payload = locals_map.get("result", {})
         narrative = (
-            f"Automated quantitative pass for task context: {task[:200]}\n\n"
-            f"```{json.dumps(payload, indent=2)}```"
+            f"Automated quantitative pass for task context: {task[:200]}\n\n" f"```{json.dumps(payload, indent=2)}```"
         )
     except Exception as exc:  # pragma: no cover - defensive
         logger.warning("data_analysis_failed", error=str(exc))

@@ -84,9 +84,7 @@ class DocumentRepository:
         Returns:
             Tuple of rows and total count.
         """
-        count_stmt = (
-            select(func.count()).select_from(DocumentSource).where(DocumentSource.org_id == org_id)
-        )
+        count_stmt = select(func.count()).select_from(DocumentSource).where(DocumentSource.org_id == org_id)
         total = int((await self._session.execute(count_stmt)).scalar_one())
         stmt = (
             select(DocumentSource)

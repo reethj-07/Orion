@@ -61,9 +61,12 @@ async def test_login_rejects_invalid_password(settings) -> None:
     user.hashed_password = "stored-hash"
     user.is_active = True
 
-    with patch("app.services.auth_service.UserRepository") as user_repo_cls, patch(
-        "app.services.auth_service.verify_password",
-        return_value=False,
+    with (
+        patch("app.services.auth_service.UserRepository") as user_repo_cls,
+        patch(
+            "app.services.auth_service.verify_password",
+            return_value=False,
+        ),
     ):
         user_repo = user_repo_cls.return_value
         user_repo.get_by_email = AsyncMock(return_value=user)

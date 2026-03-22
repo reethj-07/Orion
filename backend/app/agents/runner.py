@@ -80,10 +80,7 @@ async def run_workflow_graph(workflow_id: UUID, org_id: UUID, user_id: UUID) -> 
             )
             await session.commit()
 
-        trace = [
-            {"agent": name, "preview": body[:500]}
-            for name, body in final_state.get("agent_outputs", {}).items()
-        ]
+        trace = [{"agent": name, "preview": body[:500]} for name, body in final_state.get("agent_outputs", {}).items()]
         await agent_repo.save_workflow_result(
             workflow_id=workflow_id,
             markdown_report=report,
