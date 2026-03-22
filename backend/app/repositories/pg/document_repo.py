@@ -1,5 +1,6 @@
 """Persistence operations for document sources."""
 
+import inspect
 from uuid import UUID
 
 from sqlalchemy import Select, func, select
